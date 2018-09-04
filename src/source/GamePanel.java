@@ -1,6 +1,7 @@
 package source;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,14 @@ final int MENU_STATE = 0;
 final int GAME_STATE = 1;
 
 final int END_STATE = 2;
+
+Font titleFont;
+
+Font subFont;
+
+Rocketship rs = new Rocketship(250,700,50,50);
+
+ObjectManager go = new ObjectManager(rs);
 
 int CURRENT_STATE = MENU_STATE;
 @Override
@@ -38,6 +47,8 @@ public void paintComponent(Graphics g){
 
 GamePanel() {
 	timer = new Timer(1000/60,this);
+	titleFont = new Font("Arial", Font.PLAIN, 48);
+	subFont = new Font("Arial", Font.PLAIN, 24);
 	
 }
 
@@ -50,7 +61,19 @@ void updateMenuState() {
 }
 
 void updateGameState() {
-	
+	go.update();
+	if(up) {
+		rs.y-=rs.speed;
+	}
+	if(down) {
+		rs.y+=rs.speed;
+	}
+	if(right) {
+		rs.x+=rs.speed;
+	}
+	if(left) {
+		rs.x-=rs.speed;
+	}
 }
 
 void updateEndState() {
@@ -59,21 +82,32 @@ void updateEndState() {
 
 void drawMenuState(Graphics g) {
 	g.setColor(Color.BLUE);
-
 	g.fillRect(0, 0, LeagueInvaders.width, LeagueInvaders.height);
+	g.setColor(Color.YELLOW);
+	g.setFont(titleFont);
+	g.drawString("LEAGUE INVADERS", 25, 200);
+	g.setFont(subFont);
+	g.drawString("Press ENTER to start", 125, 400);
+	g.drawString("Press SPACE for instructions", 87, 600);
+	
 	
 }
 
 void drawGameState(Graphics g) {
 	g.setColor(Color.BLACK);
-
 	g.fillRect(0, 0, LeagueInvaders.width, LeagueInvaders.height);
+	go.draw(g);
 }
 
 void drawEndState(Graphics g) {
 	g.setColor(Color.RED);
-
 	g.fillRect(0, 0, LeagueInvaders.width, LeagueInvaders.height);
+	g.setColor(Color.BLACK);
+	g.setFont(titleFont);
+	g.drawString("GAME OVER", 100, 200);
+	g.setFont(subFont);
+	g.drawString("You killed " + "enemies", 137, 400);
+	g.drawString("Press ENTER to restart", 100, 600);
 }
 
 @Override
@@ -95,9 +129,9 @@ public void actionPerformed(ActionEvent e) {
 @Override
 public void keyTyped(KeyEvent e) {
 	// TODO Auto-generated method stub
-	System.out.println("1");
+	
 }
-
+boolean up = false, right = false, down = false, left = false;
 @Override
 public void keyPressed(KeyEvent e) {
 	// TODO Auto-generated method stub
@@ -110,12 +144,38 @@ if(CURRENT_STATE > END_STATE){
         }
 
 	}
-	System.out.println("2");
+	if(CURRENT_STATE == GAME_STATE) {
+		if(e.getKeyCode() == KeyEvent.VK_UP) {
+			up = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			right = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+			left = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+			down = true;
+		}
+		
+	}
+	
 }
 
 @Override
 public void keyReleased(KeyEvent e) {
 	// TODO Auto-generated method stub
-	System.out.println("3");
+	if(e.getKeyCode() == KeyEvent.VK_UP) {
+		up = false;
+	}
+	if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		right = false;
+	}
+	if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+		left = false;
+	}
+	if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+		down = false;
+	}	
 }
 }

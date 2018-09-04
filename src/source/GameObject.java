@@ -8,6 +8,8 @@ int y;
 int width;
 int height;
 
+boolean isAlive = true;
+
 GameObject(int x, int y, int width, int height) {
 	this.x = x;
 	this.y = y;
@@ -16,11 +18,12 @@ GameObject(int x, int y, int width, int height) {
 }
 
 void update() {
-	y++;
+	
 }
 
 void draw(Graphics g) {
-	g.fillRect(x, y, 100, 100);
+	
 }
+
 
 }
