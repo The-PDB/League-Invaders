@@ -59,6 +59,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void updateGameState() {
 		manager.update();
+		manager.manageEnemies();
+		manager.checkCollision();
+		manager.purgeObjects();
+		if (!rs.isAlive) {
+			CURRENT_STATE = END_STATE;
+
+		}
 		if (up) {
 			rs.y -= rs.speed;
 		}
@@ -131,16 +138,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			CURRENT_STATE++;
-			if (CURRENT_STATE > END_STATE) {
+		if (CURRENT_STATE == END_STATE) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				CURRENT_STATE = 0;
+			}
+		}
 
-				CURRENT_STATE = MENU_STATE;
+		else if (CURRENT_STATE == MENU_STATE) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				CURRENT_STATE = 1;
 
 			}
+		} else if (CURRENT_STATE == GAME_STATE) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				CURRENT_STATE = 2;
 
-		}
-		if (CURRENT_STATE == GAME_STATE) {
+			}
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				up = true;
 			}
