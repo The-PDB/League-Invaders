@@ -11,6 +11,12 @@ public class ObjectManager {
 
 	long enemyTimer = 0;
 	int enemySpawnTime = 2500;
+	int score = 0;
+
+	public int getScore() {
+		return score;
+	}
+	
 
 	ObjectManager(Rocketship rs2) {
 		this.rs2 = rs2;
@@ -47,7 +53,7 @@ public class ObjectManager {
 	public void manageEnemies() {
 		
 		if (System.currentTimeMillis() - enemyTimer >= enemySpawnTime) {
-			addAlien(new Alien(new Random().nextInt(LeagueInvaders.width), 0, 50, 50));
+			addAlien(new Alien(new Random().nextInt(LeagueInvaders.width - 50), 0, 50, 50));
 
 			enemyTimer = System.currentTimeMillis();
 		}
@@ -72,6 +78,7 @@ public class ObjectManager {
 	        for(Projectile p : pList) {
 	        if(p.collisionBox.intersects(a.collisionBox)) {
 	        		a.isAlive = false;
+	        		score++;
 	        		p.isAlive = false;
 	        }
 
